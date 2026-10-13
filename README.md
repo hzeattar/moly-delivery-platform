@@ -12,11 +12,19 @@
 
 ---
 
-## 💎 Instant Commercial Purchase ($49 USDT)
-Pay directly with **USDT (TRC20)** to receive the full unencrypted source code and installation guide:
+## 💎 Instant Commercial Purchase
+### 🇪🇬 Egyptian Clients (2,500 EGP):
+* **InstaPay Direct:** `01144472763`
+* **Vodafone Cash:** `01140280944`
+
+### 🌍 International Clients ($49 USDT):
+* **Network:** Tron (TRC20)
 * **TRC20 Wallet Address:** `TLtJPSeqmzV7QrsZmqNS59BdSP6uSWF5im`
-* **Instant WhatsApp Handover:** [Chat on WhatsApp](https://wa.me/201144472763)
+
+### 📲 Instant Handover & Support:
 * **Telegram Bot:** [@moly_codebot](https://t.me/moly_codebot)
+* **Direct Telegram:** [@Human_recycling](https://t.me/Human_recycling)
+* **Official Email:** `molycode_24219@maxxspace.com`
 
 ---
 
