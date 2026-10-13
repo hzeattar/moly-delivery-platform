@@ -1,197 +1,497 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>moly Delivery Pro - نظام التوصيل والمتاجر المتكامل (Flutter + Laravel)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>moly Delivery Pro | Full-Stack On-Demand Multi-Store Delivery Platform</title>
+    <meta name="description" content="Complete commercial delivery system featuring Flutter 3.x Customer App, Delivery Boy Driver App, and Laravel Multi-Vendor Cloud Admin Panel.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.4);
+            --primary-glow: rgba(99, 102, 241, 0.35);
             --secondary: #10b981;
-            --accent: #f59e0b;
-            --bg-dark: #090d16;
-            --card-bg: rgba(18, 24, 38, 0.85);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --accent: #38bdf8;
+            --bg-dark: #070a13;
+            --card-bg: rgba(16, 23, 40, 0.8);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(99, 102, 241, 0.25);
             --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --text-body: #cbd5e1;
+            --text-muted: #8896ab;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
         body {
-            background: radial-gradient(circle at top right, #1e1b4b, #090d16 60%);
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(56, 189, 248, 0.04) 0px, transparent 50%);
+            color: var(--text-body);
             min-height: 100vh;
-            padding: 20px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .brand-font {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Nav */
+        nav {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--card-border);
+            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 10, 19, 0.85);
         }
-        .container { max-width: 1050px; width: 100%; }
-        .header { text-align: center; margin: 40px 0 30px; }
-        .badge {
-            display: inline-block;
-            background: rgba(99, 102, 241, 0.2);
-            color: #818cf8;
-            border: 1px solid rgba(99, 102, 241, 0.4);
-            padding: 6px 18px;
-            border-radius: 30px;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #6366f1, #10b981);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .btn-nav {
+            background: #229ED9;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
             font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 16px rgba(34, 158, 217, 0.35);
         }
-        h1 { font-size: 40px; font-weight: 900; line-height: 1.3; margin-bottom: 16px; }
-        h1 span { background: linear-gradient(135deg, #818cf8, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { font-size: 18px; color: var(--text-muted); max-width: 750px; margin: 0 auto; line-height: 1.6; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin: 40px 0; }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(34, 158, 217, 0.5);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 50px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border-radius: 100px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--border-highlight);
+            color: #818cf8;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: 54px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 22px;
+            max-width: 950px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 740px;
+            margin: 0 auto 36px;
+            line-height: 1.65;
+        }
+
+        /* Grid */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin: 40px 0 70px;
+        }
+
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 22px;
+            padding: 32px;
             backdrop-filter: blur(16px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s;
         }
-        .card h3 { font-size: 20px; margin-bottom: 16px; color: #38bdf8; }
-        .card ul { list-style: none; }
-        .card li { margin-bottom: 12px; font-size: 15px; display: flex; align-items: center; gap: 10px; }
-        .card li::before { content: "✓"; color: #10b981; font-weight: bold; font-size: 18px; }
 
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-highlight);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 14px;
+            color: #fff;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            font-size: 14px;
+            color: var(--text-body);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card li::before {
+            content: "✓";
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Pricing Card */
         .pricing-box {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            background: linear-gradient(180deg, rgba(25, 33, 56, 0.9) 0%, rgba(13, 18, 32, 0.95) 100%);
             border: 2px solid var(--primary);
-            border-radius: 24px;
-            padding: 40px;
+            border-radius: 26px;
+            padding: 50px 36px;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 50px var(--primary-glow);
-            margin: 40px 0;
+            box-shadow: 0 20px 60px var(--primary-glow);
+            max-width: 720px;
+            margin: 0 auto 80px;
         }
-        .price { font-size: 52px; font-weight: 900; color: #34d399; font-family: 'Outfit', sans-serif; }
-        .price-sub { font-size: 16px; color: var(--text-muted); text-decoration: line-through; margin-right: 10px; }
-        
-        .crypto-card {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px dashed #6366f1;
-            border-radius: 16px;
+
+        .price-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .price-wrap {
+            margin: 20px 0;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .price-slashed {
+            font-size: 24px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+
+        .price-current {
+            font-size: 58px;
+            font-weight: 900;
+            color: #34d399;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .price-currency {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .crypto-settlement-card {
+            background: rgba(7, 10, 19, 0.7);
+            border: 1px dashed var(--primary);
+            border-radius: 18px;
             padding: 24px;
-            margin: 24px auto;
-            max-width: 550px;
+            margin: 26px auto;
+            max-width: 560px;
         }
-        .wallet-addr {
+
+        .settle-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .wallet-address {
             background: #000;
-            color: #38bdf8;
+            color: var(--accent);
             padding: 12px;
             border-radius: 10px;
-            font-family: monospace;
-            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
             word-break: break-all;
-            margin: 12px 0;
-            border: 1px solid #334155;
-            user-select: all;
+            margin: 10px 0 14px;
+            border: 1px solid #1e293b;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .btn {
+
+        .wallet-address:hover {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .qr-wrap {
+            margin: 16px 0;
+        }
+
+        .qr-wrap img {
+            border-radius: 12px;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .btn-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 16px 32px;
-            border-radius: 14px;
-            font-size: 17px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 700;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.25s ease;
-            margin: 8px;
+            margin: 6px;
         }
-        .btn-wa { background: #25D366; color: #fff; box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3); }
-        .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4); }
-        .btn-tg { background: #0088cc; color: #fff; box-shadow: 0 8px 25px rgba(0, 136, 204, 0.3); }
-        .btn-tg:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 136, 204, 0.4); }
-        .btn-copy { background: #4f46e5; color: #fff; border: none; padding: 10px 20px; font-size: 13px; }
 
-        .qr-wrap { margin: 15px 0; }
-        .qr-wrap img { border-radius: 12px; border: 4px solid #fff; }
+        .btn-tg {
+            background: #229ED9;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(34, 158, 217, 0.35);
+        }
 
-        footer { text-align: center; margin-top: 50px; color: var(--text-muted); font-size: 14px; }
+        .btn-tg:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 158, 217, 0.5);
+        }
+
+        .btn-email {
+            background: #ea4335;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(234, 67, 53, 0.35);
+        }
+
+        .btn-email:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(234, 67, 53, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--card-border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 36px; }
+            .price-current { font-size: 46px; }
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="header">
-            <span class="badge">🚀 كود مصدري كامل وجاهز للتشغيل والبيع فوراً</span>
-            <h1>نظام التوصيل والمتاجر الذكي <span>moly Delivery Pro</span></h1>
-            <p class="subtitle">حل برمجي متكامل يضم تطبيق فلاتر للعملاء + تطبيق فلاتر لمندوبي التوصيل + لوحة تحكم سحابية Laravel متعددة المتاجر مع نظام تتبع GPS ونظام دفع إلكتروني متكامل.</p>
+        <!-- Navigation -->
+        <nav>
+            <a href="#" class="logo">
+                <div class="logo-icon">🛵</div>
+                <span>moly Delivery Pro</span>
+            </a>
+            <a href="https://t.me/moly_codebot" target="_blank" class="btn-nav">
+                <span>Direct Telegram</span>
+                <span>✈️</span>
+            </a>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="badge">🚀 Instant Source Code Buyout • Commercial License</div>
+            <h1 class="hero-title">
+                Full-Stack On-Demand <span class="gradient-text">Delivery & Marketplace</span> Ecosystem
+            </h1>
+            <p class="hero-subtitle">
+                Complete, production-tested delivery platform featuring a Flutter 3.x Customer App, a dedicated Flutter Driver App with live GPS tracking, and a powerful Laravel Multi-Store Cloud Admin Panel.
+            </p>
+        </section>
+
+        <!-- Product Components -->
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-icon">📱</div>
+                <h3>Customer App (Flutter 3.x)</h3>
+                <ul>
+                    <li>Modern, responsive cross-platform UI (iOS & Android).</li>
+                    <li>Smart shopping cart with voucher & discount engine.</li>
+                    <li>Live real-time driver GPS tracking on Google Maps.</li>
+                    <li>Instant push notifications for each order status update.</li>
+                    <li>Multi-store catalogue with real-time stock counts.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🛵</div>
+                <h3>Driver & Delivery Boy App</h3>
+                <ul>
+                    <li>Instant order broadcast with nearby task dispatching.</li>
+                    <li>Turn-by-turn Google Maps navigation for fastest routes.</li>
+                    <li>Digital driver wallet with commission & earnings ledger.</li>
+                    <li>Proof of Delivery (POD) via OTP code and digital signature.</li>
+                    <li>Online / Offline toggle with battery-efficient geolocation.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Cloud Super-Admin Panel (Laravel)</h3>
+                <ul>
+                    <li>Multi-vendor store, menu, category & zone management.</li>
+                    <li>Comprehensive financial reports, payout & revenue analytics.</li>
+                    <li>High-throughput RESTful JSON APIs for seamless mobile sync.</li>
+                    <li>Ready for instant deployment on VPS, Railway, AWS, or cPanel.</li>
+                    <li>Multi-currency, tax calculation, and order dispatch engine.</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="grid">
-            <div class="card">
-                <h3>📱 تطبيق العميل (Flutter 3.x)</h3>
-                <ul>
-                    <li>واجهة مستخدم عصرية وسريعة تدعم العربية والإنجليزية.</li>
-                    <li>سلة تسوق ذكية مع نظام كوبونات وخصومات.</li>
-                    <li>تتبع مباشر لحركة المندوب على الخريطة (GPS).</li>
-                    <li>إشعارات فورية بحالة الطلب لحظة بلحظة.</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>🛵 تطبيق مندوب التوصيل (Delivery Boy)</h3>
-                <ul>
-                    <li>تنبيه فوري بالطلبات القريبة وتوزيع المهام الذكي.</li>
-                    <li>ملاحة مدمجة عبر خرائط جوجل لأقصر مسار.</li>
-                    <li>محفظة مالية لحساب أرباح وعمولات المندوب.</li>
-                    <li>إثبات التسليم عبر كود OTP أو التوقيع الرقمي.</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>⚙️ لوحة الإدارة السحابية (Laravel)</h3>
-                <ul>
-                    <li>إدارة المتاجر، المنتجات، التصنيفات، والمناطق.</li>
-                    <li>تقارير مالية تفصيلية ومراقبة الإيرادات.</li>
-                    <li>واجهات برمجية RESTful API فائقة السرعة.</li>
-                    <li>دعم استضافة سحابية (Railway, VPS, cPanel).</li>
-                </ul>
-            </div>
-        </div>
-
+        <!-- Pricing & Settlement Box -->
         <div class="pricing-box">
-            <span class="badge" style="background:#10b98122; color:#34d399; border-color:#10b98166;">عرض الإطلاق السريع - تسليم فوري</span>
-            <div style="margin: 20px 0;">
-                <span class="price-sub">$199 USD</span>
-                <span class="price">$49 USDT</span>
+            <div class="price-badge">Instant Delivery • Unlimited Commercial Rights</div>
+            <div class="price-wrap">
+                <span class="price-slashed">$199 USD</span>
+                <span class="price-current">$49</span>
+                <span class="price-currency">USDT</span>
             </div>
-            <p style="font-size: 16px; color: var(--text-muted); margin-bottom: 24px;">تحصل على الكود المصدري الكامل بدون تشفير + توثيق الإعداد + ترخيص استخدام تجاري غير محدود.</p>
+            <p style="font-size: 15px; color: var(--text-muted); margin-bottom: 24px;">
+                You receive 100% unencrypted source code (Flutter + Laravel) + full documentation + lifetime commercial deployment rights.
+            </p>
 
-            <div class="crypto-card">
-                <h4 style="color:#e2e8f0; margin-bottom: 8px;">💎 طرق الدفع المعتمدة بدقة:</h4>
-                <div style="text-align: right; margin-bottom: 12px; font-size: 14px;">
-                    <div style="color: #38bdf8; font-weight: bold;">🇪🇬 للعملاء داخل مصر (2,500 ج.م):</div>
-                    <div>• إنستاباي (InstaPay): <strong>01144472763</strong></div>
-                    <div>• فودافون كاش: <strong>01140280944</strong></div>
-                </div>
-                <div style="text-align: right; font-size: 14px; border-top: 1px solid #334155; padding-top: 10px;">
-                    <div style="color: #34d399; font-weight: bold;">🌍 للعملاء خارج مصر ($49 USDT):</div>
-                    <div style="font-size: 12px; color: #94a3b8;">USDT TRC20:</div>
-                    <div class="wallet-addr" id="wallet">TLtJPSeqmzV7QrsZmqNS59BdSP6uSWF5im</div>
+            <div class="crypto-settlement-card">
+                <div class="settle-title">Global Blockchain Settlement • USDT (TRC20)</div>
+                <div class="wallet-address" id="wallet" onclick="copyWallet()" title="Click to copy">
+                    TLtJPSeqmzV7QrsZmqNS59BdSP6uSWF5im
                 </div>
                 <div class="qr-wrap">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TLtJPSeqmzV7QrsZmqNS59BdSP6uSWF5im" alt="USDT QR Code" width="140" height="140">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TLtJPSeqmzV7QrsZmqNS59BdSP6uSWF5im" alt="USDT TRC20 QR Code" width="140" height="140">
                 </div>
+                <p style="font-size: 12px; color: #8896ab; margin-top: 8px;">
+                    Send $49 USDT (TRC20), then share your transaction hash via Telegram or Email for immediate archive delivery.
+                </p>
             </div>
 
             <div style="margin-top: 30px;">
-                <p style="font-size: 15px; color: #cbd5e1; margin-bottom: 16px;">بعد التحويل، أو للشراء والاستفسار المباشر، تواصل معنا فوراً لاستلام الكود في أقل من 5 دقائق:</p>
-                <a href="https://t.me/moly_codebot" target="_blank" class="btn btn-tg">🤖 محادثة بوت تيليجرام الرسمي</a>
-                <a href="https://t.me/Human_recycling" target="_blank" class="btn btn-tg" style="background: #1783b5;">💬 تواصل مباشر تيليجرام</a>
-                <a href="mailto:molycode_24219@maxxspace.com" class="btn" style="background: #ea4335; color: #fff;">✉️ مراسلة عبر البريد الإلكتروني</a>
+                <p style="font-size: 15px; color: #cbd5e1; margin-bottom: 16px;">
+                    Instant support and transfer desk available 24/7:
+                </p>
+                <a href="https://t.me/moly_codebot" target="_blank" class="btn-action btn-tg">
+                    <span>Official Telegram Bot</span>
+                    <span class="mono-font">@moly_codebot</span>
+                </a>
+                <a href="https://t.me/Human_recycling" target="_blank" class="btn-action btn-tg" style="background: #1783b5;">
+                    <span>Direct Executive Desk</span>
+                    <span class="mono-font">@Human_recycling</span>
+                </a>
+                <a href="mailto:molycode_24219@maxxspace.com" class="btn-action btn-email">
+                    <span>Direct Email Desk</span>
+                    <span class="mono-font">molycode_24219@maxxspace.com</span>
+                </a>
             </div>
         </div>
 
+        <!-- Footer -->
         <footer>
-            <p>حقوق النشر &copy; 2026 شركة moly Code للحلول التقنية والذكاء الاصطناعي. جميع الحقوق محفوظة.</p>
+            <div class="container">
+                <p>&copy; 2026 moly Delivery Pro | Virtual Tech Company. All Rights Reserved. Engineered for Global High-Performance Logistics.</p>
+            </div>
         </footer>
     </div>
+
+    <script>
+        function copyWallet() {
+            const addr = "TLtJPSeqmzV7QrsZmqNS59BdSP6uSWF5im";
+            navigator.clipboard.writeText(addr).then(() => {
+                alert("USDT TRC20 address copied to clipboard:\n" + addr);
+            }).catch(() => {
+                prompt("Copy USDT TRC20 address:", addr);
+            });
+        }
+    </script>
 </body>
 </html>
